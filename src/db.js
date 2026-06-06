@@ -1,20 +1,24 @@
-import fs from 'node:fs/promises'
+import fs from "node:fs/promises";
 
-const DB_PATH = new URL('../db.json', import.meta.url).pathname
+const DB_PATH = new URL("../db.json", import.meta.url).pathname;
 
-export const getDB = async () => {
-  const db = await fs.readFile(DB_PATH, 'utf-8')
-  return JSON.parse(db)
-}
+// We want to make a few helper functions to read and write to our db.json file. This will make it easier to work with the data in our app.
 
-export const saveDB = async (db) => {
-  await fs.writeFile(DB_PATH, JSON.stringify(db, null, 2))
-  return db
-}
+const getDB = async () => {
+  const db = await fs.readFile(DB_PATH, "utf-8");
+  return JSON.parse(db);
+};
 
-export const insert = async (data) => {
-  const db = await getDB()
-  db.notes.push(data)
-  await saveDB(db)
-  return data 
-}
+const saveDB = async (db) => {
+  await fs.writeFile(DB_PATH, JSON.stringify(db, null, 2));
+  return db;
+};
+
+const insertDB = async (note) => {
+  const db = await getDB();
+  db.notes.push(note);
+  await saveDB(db);
+  return note;
+};
+
+export { getDB, insertDB, saveDB };

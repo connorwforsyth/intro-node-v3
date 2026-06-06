@@ -1,3 +1,24 @@
 {
-  "notes": []
+  "notes": [
+    {
+      "id": 1775915736311,
+      "content": "hey this is a new note",
+      "tags": [
+        "new",
+        " note"
+      ]
+    },
+    {
+      "id": 1775971381085,
+      "content": "Second Note",
+      "tags": [
+        "2"
+      ]
+    },
+    {
+      "id": 1775971999832,
+      "content": "ney",
+      "tags": []
+    }
+  ]
 }

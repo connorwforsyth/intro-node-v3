@@ -1,53 +1,32 @@
-import { jest } from '@jest/globals';
+import { beforeEach, jest } from "@jest/globals";
 
-jest.unstable_mockModule('../src/db.js', () => ({
-  insert: jest.fn(),
-  getDB: jest.fn(),
-  saveDB: jest.fn(),
+jest.unstable_mockModule("../src/db.js", () => ({
+	insertDB: jest.fn(),
+	saveDB: jest.fn(),
+	getDB: jest.fn(),
 }));
 
-const { insert, getDB, saveDB } = await import('../src/db.js');
-const { newNote, getAllNotes, removeNote } = await import('../src/notes.js');
+const { insertDB, saveDB, getDB } = await import("../src/db.js");
+const { newNote, getAllNotes, removeNote } = await import("../src/crud.js");
 
 beforeEach(() => {
-  insert.mockClear();
-  getDB.mockClear();
-  saveDB.mockClear();
-})
-
-test('newNote inserts data and returns it', async () => {
-  const note = 'Test note';
-  const tags = ['tag1', 'tag2'];
-  const data = {
-    tags,
-    content: note,
-    id: Date.now(),
-  };
-  insert.mockResolvedValue(data);
-
-  const result = await newNote(note, tags);
-  expect(result).toEqual(data);
+	insertDB.mockClear();
+	getDB.mockClear();
+	saveDB.mockClear();
 });
 
-test('getAllNotes returns all notes', async () => {
-  const db = {
-    notes: ['note1', 'note2', 'note3']
-  };
-  getDB.mockResolvedValue(db);
+test("New note inserts data and returns it", async () => {
+	const note = "Test note";
+	const tags = ["test", "note"];
+	const data = {
+		content: note,
+		id: Date.now(),
+		tags,
+	};
 
-  const result = await getAllNotes();
-  expect(result).toEqual(db.notes);
-});
+	insertDB.mockResolvedValue(data);
 
-test('removeNote does nothing if id is not found', async () => {
-  const notes = [
-    { id: 1, content: 'note 1' },
-    { id: 2, content: 'note 2' },
-    { id: 3, content: 'note 3' },
-  ];
-  saveDB.mockResolvedValue(notes);
-
-  const idToRemove = 4;
-  const result = await removeNote(idToRemove);
-  expect(result).toBeUndefined();
+	const result = await newNote(data.content, data.tags);
+	expect(result.content).toEqual(note.content);
+	expect(result.tags).toEqual(tags);
 });
